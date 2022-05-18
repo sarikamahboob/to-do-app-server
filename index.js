@@ -20,6 +20,17 @@ async function run() {
     await client.connect();
     const taskCollection = client.db("to-do-app").collection("tasks");
 
+    app.patch("/tasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await taskCollection.updateOne(query, {
+        $set: {
+          status: "completed",
+        },
+      });
+      res.send(result);
+    });
+
     app.get("/tasks", async (req, res) => {
       const query = req.query;
       const cursor = await taskCollection.find(query).toArray();
@@ -37,7 +48,9 @@ async function run() {
         const result = await taskCollection.deleteOne(query);
         res.send(result);
       });
+      
     });
+
   } finally {
   }
 }
