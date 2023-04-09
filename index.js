@@ -29,7 +29,7 @@ async function run() {
     app.post("/tasks", async (req, res) => {
       const newTask = req.body;
       const result = await taskCollection.insertOne(newTask);
-      res.send(result, newTask);
+      res.send(result);
     });
 
       app.delete("/tasks/:id", async (req, res) => {
